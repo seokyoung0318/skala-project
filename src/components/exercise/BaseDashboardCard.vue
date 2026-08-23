@@ -1,3 +1,4 @@
+<script setup></script>
 <template>
   <div class="dashboard-card">
     <slot name="search"> </slot>
