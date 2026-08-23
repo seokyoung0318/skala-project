@@ -1,6 +1,5 @@
 <script setup>
 import weatherLogo from '@/assets/WeatherOrder_Logo.png'
-
 </script>
 
 <template>
@@ -14,21 +13,18 @@ import weatherLogo from '@/assets/WeatherOrder_Logo.png'
     </section>
 
     <section class="devlog-card">
-  <h3 class="section-title">발주 기준 시점에 대한 재판단</h3>
-  <p class="section-text">
-    처음엔 "오늘의 날씨" 기준으로 발주량을 추천하고자 했으나, 개발 간 실제
-    발주 업무 경험을 되살려보니 평소 발주는 전날 익일 판매분을 주문하여
-    배송을 받는 구조였음을 깨달았습니다. 예를 들어 무더운 날 평소 4~5개
-    팔리던 얼음컵이 20개 이상 팔릴 만큼 수요가 몰려도, 재고가 미리
-    준비되어 있지 않으면 "없어서 못 파는" 기회손실이 그대로 발생합니다.
-    문제는 이런 수요 폭증을 전날 시점에는 점주가 예측할 방법이 마땅치
-    않다는 점이었습니다. 정작 "오늘 날씨"는 점주 본인이 직접 체감할 수
-    있는 정보라 서비스가 새롭게 제공할 가치가 크지 않지만, 점주가
-    고려하지 못하고 지나친 "내일 날씨"는 발주 시점에 꼭 필요한 정보라고
-    판단했습니다. 때문에 API 데이터를 "지금 시각과 가장 가까운 예보"에서
-    "내일 날짜 기준 예보"로 로직 전체를 바꾸게 되었습니다.
-  </p>
-</section>
+      <h3 class="section-title">발주 기준 시점에 대한 재판단</h3>
+      <p class="section-text">
+        처음엔 "오늘의 날씨" 기준으로 발주량을 추천하고자 했으나, 개발 간 실제 발주 업무 경험을
+        되살려보니 평소 발주는 전날 익일 판매분을 주문하여 배송을 받는 구조였음을 깨달았습니다. 예를
+        들어 무더운 날 평소 4~5개 팔리던 얼음컵이 20개 이상 팔릴 만큼 수요가 몰려도, 재고가 미리
+        준비되어 있지 않으면 "없어서 못 파는" 기회손실이 그대로 발생합니다. 문제는 이런 수요 폭증을
+        전날 시점에는 점주가 예측할 방법이 마땅치 않다는 점이었습니다. 정작 "오늘 날씨"는 점주
+        본인이 직접 체감할 수 있는 정보라 서비스가 새롭게 제공할 가치가 크지 않지만, 점주가 고려하지
+        못하고 지나친 "내일 날씨"는 발주 시점에 꼭 필요한 정보라고 판단했습니다. 때문에 API 데이터를
+        "지금 시각과 가장 가까운 예보"에서 "내일 날짜 기준 예보"로 로직 전체를 바꾸게 되었습니다.
+      </p>
+    </section>
 
     <section class="devlog-card">
       <h3 class="section-title">트러블슈팅</h3>
@@ -81,8 +77,8 @@ import weatherLogo from '@/assets/WeatherOrder_Logo.png'
         <div class="trouble-item">
           <p class="trouble-title">5. Chart.js 그래프가 에러 없이 안 뜨는 문제</p>
           <p class="trouble-text">
-            <strong>원인</strong> — 데이터를 갱신한 직후 바로 그래프를 그리면, Vue가 화면(DOM)을 아직
-            업데이트하지 않은 상태라 캔버스가 존재하지 않음
+            <strong>원인</strong> — 데이터를 갱신한 직후 바로 그래프를 그리면, Vue가 화면(DOM)을
+            아직 업데이트하지 않은 상태라 캔버스가 존재하지 않음
           </p>
           <p class="trouble-text">
             <strong>해결</strong> — await nextTick()으로 DOM 업데이트 완료를 기다린 뒤 렌더링하도록
@@ -117,6 +113,46 @@ import weatherLogo from '@/assets/WeatherOrder_Logo.png'
           plugins 등)를 아직 완전히 체화하진 못함 — 다음엔 공식 문서로 원리를 더 다질 예정
         </li>
       </ul>
+    </section>
+
+    <section class="devlog-card">
+      <h3 class="section-title">추후 추가하고 싶은 기능</h3>
+      <p class="section-text">
+        이번 프로젝트 기간 동안 구현하지 못했지만 추후 서비스 고도화 및 더 나은 사용자 경험을 위해
+        추가 필요한 기능 두 가지 먼저 필요하다고 생각합니다.
+      </p>
+
+      <div class="next-grid">
+        <div class="next-item">
+          <p class="next-title">1. 지역 즐겨찾기</p>
+          <p class="next-text">
+            <strong>필요한 이유</strong> — 점주가 확인하는 지역은 사실상 본인의 점포가 위치한
+            지역으로 고정되어 있습니다. 매일 반복하는 발주 업무에서 매번 지역을 검색해 들어가는 건
+            불필요한 뎁스를 발생시키므로 즐겨찾기 기능을 추가해 사용자 편리를 높이고자 합니다.
+          </p>
+
+          <p class="next-text">
+            <strong>구현 방향</strong> — 지역 카드에 즐겨찾기 버튼을 두고 선택한 지역을
+            localStorage에 저장해, 재방문 시 대시보드 상단에 바로 노출되도록 구성
+          </p>
+        </div>
+
+        <div class="next-item">
+          <p class="next-title">2. 상세 정보 내 일주일 기상 예보</p>
+          <p class="next-text">
+            <strong>필요한 이유</strong> — 현재는 내일 하루만 보여주지만 실제 소상공인 영세 업체의
+            발주는 유통기한과 재고 회전일을 고려하되 발주 시 물류 비용까지 고려 해야할 것입니다.
+            일자별 발주가 아닌 주차별 발주의 가능성이 있다고 판단, 또한 주말 내내 비 예보가
+            이어진다면 그 전날부터 우산 물량을 늘리고 반대로 회전이 느린 상품은 줄이는 식의 판단
+            필요로 주간 예보 기능을 추가하고자 합니다.
+          </p>
+          <p class="next-text">
+            <strong>구현 방향</strong> — 지금 사용 중인 OpenWeatherMap forecast API가 이미 5일치
+            3시간 단위 데이터를 함께 내려주고 있어, 추가 API 호출 없이 응답을 날짜별로 묶어 일별
+            최고·최저 기온과 강수 여부로 요약하면 됩니다. 상세 페이지에 일자별 카드로 배치할 예정
+          </p>
+        </div>
+      </div>
     </section>
 
     <RouterLink to="/" class="back-link">← 메인 대시보드로 돌아가기</RouterLink>
@@ -182,26 +218,34 @@ import weatherLogo from '@/assets/WeatherOrder_Logo.png'
   color: var(--toss-text-sub);
 }
 
-.trouble-item {
+.trouble-item,
+.next-item {
   padding: 20px;
   border-radius: var(--toss-radius-sm);
   background: var(--toss-bg);
 }
 
-.trouble-grid {
+.trouble-grid,
+.next-grid {
   display: grid;
   grid-template-columns: 1fr;
   gap: 12px;
 }
 
-.trouble-title {
+.next-grid {
+  margin-top: 16px;
+}
+
+.trouble-title,
+.next-title {
   margin: 0 0 8px;
   font-size: 15px;
   font-weight: 700;
   color: var(--toss-text);
 }
 
-.trouble-text {
+.trouble-text,
+.next-text {
   margin: 4px 0 0;
   font-size: 13px;
   font-weight: 400;
@@ -209,7 +253,8 @@ import weatherLogo from '@/assets/WeatherOrder_Logo.png'
   color: var(--toss-text-mute);
 }
 
-.trouble-text strong {
+.trouble-text strong,
+.next-text strong {
   color: var(--toss-text-sub);
   font-weight: 600;
 }
