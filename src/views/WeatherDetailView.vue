@@ -177,7 +177,7 @@ onMounted(async () => {
   <div v-if="city">
     <h2>{{ city.name }} 상세 정보</h2>
     <p>{{ city.name }}지역 내일의 날씨는 [{{ city.status }}] 예정입니다.</p>
-    <p>예상 기온: {{ displayTemp }}도</p>
+    <p>예상 기온: {{ displayTemp }}{{ configStore.unitSymbol }}</p>
 
     <div v-if="categories.length === 0">현재 특별한 발주 추천 상품이 없습니다.</div>
     <div v-else v-for="cat in categories" :key="cat.key">
