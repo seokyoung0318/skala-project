@@ -31,17 +31,11 @@ const displayTemp = computed(() => {
     @click="emit('select-card', weather.name)"
   >
     <div class="card-header">
-      <span class="card-title"
-        >[{{
-          weather.name +
-          '(' +
-          translateWeatherStatus(weather.status) +
-          ')' +
-          '현재 기온' +
-          displayTemp +
-          configStore.unitSymbol
-        }}]</span
-      >
+  <span class="card-title">
+    <span class="city-name">{{ weather.name }}</span>
+    <span class="weather-temp">{{ displayTemp }}{{ configStore.unitSymbol }}</span>
+    <span class="weather-status">{{ translateWeatherStatus(weather.status) }}</span>
+  </span>
 
       <el-button
         class="card-detail-btn"
@@ -65,7 +59,7 @@ const displayTemp = computed(() => {
 
     <div class="sales-row" v-for="cat in weather.categories" :key="cat.key" @click.stop>
       <label class="sales-label">
-        일평균 {{ cat.label }} 판매수량:
+        일평균 {{ cat.label }} 판매수량
         <input
           class="sales-input"
           type="number"
@@ -103,6 +97,45 @@ const displayTemp = computed(() => {
 
 .weather-card-item :deep(.el-card__body) {
   padding: 24px;
+}
+
+/* ===== 헤더 ===== */
+.card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.card-title {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  letter-spacing: -0.3px;
+  line-height: 1.4;
+}
+
+.city-name {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--toss-text);
+}
+
+.weather-status {
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--toss-text-mute);
+}
+
+.weather-temp {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--toss-blue);
+}
+
+.card-detail-btn {
+  flex-shrink: 0;
+  font-weight: 600;
 }
 
 /* ===== 날씨별 분위기 (data-weather 기반, 전부 CSS) ===== */
@@ -182,27 +215,6 @@ const displayTemp = computed(() => {
   background: rgba(255, 255, 255, 0.72);
 }
 
-/* ===== 헤더 ===== */
-.card-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-}
-
-.card-title {
-  font-size: 17px;
-  font-weight: 700;
-  color: var(--toss-text);
-  letter-spacing: -0.3px;
-  line-height: 1.4;
-}
-
-.card-detail-btn {
-  flex-shrink: 0;
-  font-weight: 600;
-}
-
 /* ===== 상태 배지 ===== */
 .badge-row {
   display: flex;
@@ -259,6 +271,7 @@ const displayTemp = computed(() => {
   font-size: 14px;
   font-weight: 500;
   color: var(--toss-text-sub);
+  word-break: keep-all;
 }
 
 .sales-input {
@@ -283,7 +296,7 @@ const displayTemp = computed(() => {
 
 .sales-result {
   margin: 10px 0 0;
-  font-size: 15px;
+  font-size: 18px;
   font-weight: 700;
   color: var(--toss-blue);
   letter-spacing: -0.2px;

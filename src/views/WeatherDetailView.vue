@@ -213,19 +213,21 @@ onMounted(async () => {
       <div class="empty-box" v-if="categories.length === 0">
         현재 특별한 발주 추천 상품이 없습니다.
       </div>
-      <div class="cat-item" v-else v-for="cat in categories" :key="cat.key">
-        <label class="cat-label">
-          일평균 {{ cat.label }} 판매수량:
-          <input
-            class="cat-input"
-            type="number"
-            min="0"
-            :value="cat.baseSales"
-            @input="(e) => updateSales(cat.key, Number(e.target.value))"
-          />
-        </label>
-        <p class="cat-order">📢 {{ cat.label }} 추천 발주: {{ cat.recommendOrder }}개</p>
-        <p class="cat-reason">→ {{ getRecommendReason(cat) }}</p>
+      <div class="cat-grid" v-else>
+        <div class="cat-item" v-for="cat in categories" :key="cat.key">
+          <label class="cat-label">
+            일평균 {{ cat.label }} 판매수량:
+            <input
+              class="cat-input"
+              type="number"
+              min="0"
+              :value="cat.baseSales"
+              @input="(e) => updateSales(cat.key, Number(e.target.value))"
+            />
+          </label>
+          <p class="cat-order">📢 {{ cat.label }} 추천 발주: {{ cat.recommendOrder }}개</p>
+          <p class="cat-reason">→ {{ getRecommendReason(cat) }}</p>
+        </div>
       </div>
     </section>
 
@@ -372,12 +374,18 @@ onMounted(async () => {
 }
 
 /* ===== 발주 추천 ===== */
-.cat-item + .cat-item {
-  margin-top: 12px;
+/* auto-fit: 아이템 개수만큼만 열이 생기고 남는 폭은 각 카드가 나눠 채움 (최대 3열, 카드 최소 180px) */
+.cat-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 12px;
 }
 
 .cat-item {
-  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 14px 16px;
   border-radius: var(--toss-radius-sm);
   background: var(--toss-bg);
 }
@@ -386,21 +394,21 @@ onMounted(async () => {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
-  font-size: 14px;
+  gap: 8px;
+  font-size: 12.5px;
   font-weight: 500;
   color: var(--toss-text-sub);
 }
 
 .cat-input {
-  width: 100px;
-  height: 42px;
-  padding: 0 12px;
+  width: 72px;
+  height: 32px;
+  padding: 0 8px;
   border: 1px solid var(--toss-border);
-  border-radius: 10px;
+  border-radius: 8px;
   background: #ffffff;
   color: var(--toss-text);
-  font-size: 15px;
+  font-size: 13px;
   font-weight: 600;
   font-family: inherit;
   text-align: right;
@@ -413,17 +421,18 @@ onMounted(async () => {
 }
 
 .cat-order {
-  margin: 16px 0 0;
-  font-size: 17px;
+  margin: 0;
+  font-size: 14px;
   font-weight: 700;
   color: var(--toss-blue);
-  letter-spacing: -0.3px;
+  letter-spacing: -0.2px;
 }
 
 .cat-reason {
-  margin: 6px 0 0;
-  font-size: 13px;
+  margin: 0;
+  font-size: 11.5px;
   font-weight: 400;
+  line-height: 1.4;
   color: var(--toss-text-mute);
 }
 
@@ -484,6 +493,9 @@ onMounted(async () => {
   .summary-card::after {
     right: 16px;
     font-size: 44px;
+  }
+  .cat-grid {
+    grid-template-columns: 1fr;
   }
 }
 </style>

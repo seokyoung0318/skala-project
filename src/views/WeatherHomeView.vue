@@ -224,7 +224,7 @@ async function searchCityFromApi(cityName) {
 
 <style scoped>
 .dashboard-wrapper {
-  max-width: 680px;
+  max-width: 1080px;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
@@ -243,11 +243,21 @@ async function searchCityFromApi(cityName) {
   list-style: none;
   margin: 0;
   padding: 0;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
 }
 
-/* 마지막 카드 아래 여백 제거 (카드 자체 margin-bottom 상쇄) */
-.weather-list > :last-child {
-  margin-bottom: 0;
+@media (max-width: 900px) {
+  .weather-list {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .weather-list {
+    grid-template-columns: 1fr;
+  }
 }
 
 .empty-text {

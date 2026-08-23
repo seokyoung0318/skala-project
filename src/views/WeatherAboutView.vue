@@ -1,29 +1,40 @@
 //# 서비스 소개용 정적 페이지
-<script setup></script>
+<script setup>
+import storePhoto from '@/assets/Orders.png'
+</script>
 
 <template>
   <div class="about-wrapper">
-    <h1>매출관리의 핵심은 발주와 재고 관리</h1>
     <p class="tagline">Weather Order — 날씨 기반 사전 발주 추천 서비스</p>
+    <h1>매출관리의 핵심은 발주와 재고 관리</h1>
 
     <section class="about-section">
       <p>
-        매출관리의 핵심은 사전 발주를 통해 재고를 확보하고, 재고 회전일을 고려해 재고를 효율적으로
-        운영하는 데 있습니다. 이를 위해서는
+        매출관리의 핵심은 사전 발주를 통해 재고를 확보, 재고 회전일을 고려 효율적으로
+        운영하는 데 있습니다.<br>이를 위해서는
         <strong>판매량을 사전에 예측</strong>하고, 그에 맞춰 발주로 재고를 확보하는 과정이 무엇보다
         중요합니다.
       </p>
       <p>
-        판매량에 영향을 주는 변수는 다양하지만 대부분 통제하거나 예측하기 어렵습니다. 그중
+        판매량에 영향을 주는 변수는 다양하지만 대부분 통제하거나 예측하기 어렵습니다.<br>그중
         <strong
           >기상 조건은 매출에 직접적인 영향을 주면서도, 예보를 통해 사전 대비가 가능한 몇 안 되는
           변수</strong
         >입니다.
       </p>
       <p>
-        Weather Order는 이 기상 변수를 발주 의사결정에 직접 반영해, 판매 시점의 날씨를 기준으로
+      Weather Order는 이 기상 변수를 발주 의사결정에 직접 반영해,<br>판매 시점의 날씨를 기준으로
         상품별 발주량을 추천합니다.
       </p>
+      <p>
+        실제 대학 축제 기간처럼 유동인구가 급증하는 시점, 기상 조건에 따라 얼음컵·우산 같은 상품
+        수요가 평소 대비 배로 증가함을 경험했습니다. 기상을 고려해 사전 재고를 확보한 덕분에
+        전년 대비 103% 매출을 달성했습니다. 이 외에도 업무 간 사전 재고를 확보했던
+        점포와 준비가 부족해 "없어서 못 파는" 기회손실이 발생한 점포의 매출 차이를 체감하며 사전 재고 확보의 중요성을 느꼈습니다.
+        <br><br>이러한 경험을 바탕으로 <strong>기상에 따른 발주 추천 시스템인 Weather Order</strong>를 만들게
+        되었습니다.
+      </p>
+      <img :src="storePhoto" alt="현장 사진" class="about-photo" />
     </section>
 
     <section class="about-section">
@@ -106,6 +117,15 @@ h1 {
 .about-section strong {
   font-weight: 700;
   color: var(--toss-blue);
+}
+
+.about-photo {
+  display: block;
+  width: 100%;
+  margin-top: 20px;
+  border-radius: var(--toss-radius-sm);
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
 }
 
 .feature-list {
