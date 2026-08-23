@@ -87,7 +87,26 @@ watchEffect(() => {
 // 알림 대행 함수 (window 객체 격리 우회)
 
 onMounted(async () => {
-  const defaultCities = ['서울', '부산', '인천']
+  console.log('VITE_API_URL:', import.meta.env.VITE_API_URL)
+  const defaultCities = [
+    '서울',
+    '부산',
+    '인천',
+    '대구',
+    '광주',
+    '대전',
+    '울산',
+    '세종',
+    '수원',
+    '춘천',
+    '청주',
+    '천안',
+    '전주',
+    '목포',
+    '포항',
+    '창원',
+    '제주',
+  ]
 
   for (const city of defaultCities) {
     await searchCityFromApi(city)
