@@ -39,31 +39,32 @@ const route = useRoute()
 .app-header-inner {
   max-width: 1080px;
   margin: 0 auto;
-  padding: 0 24px;
+  padding: 0 12px;
 }
 
 .logo-img {
-  height: 32px;
+  height: 81px;
   object-fit: contain;
+  vertical-align: middle;
 }
 
 .app-main {
   width: 100%;
-  min-height: calc(100vh - 68px);
+  min-height: calc(100vh - 96px);
   padding: 40px 24px 80px;
 }
 
 /* ===== Element Plus 메뉴 토스 스타일 오버라이드 ===== */
 .app-header :deep(.el-menu--horizontal) {
   border-bottom: none;
-  height: 68px;
+  height: 96px;
   background: transparent;
   align-items: center;
 }
 
 .app-header :deep(.el-menu--horizontal > .el-menu-item) {
-  height: 68px;
-  line-height: 68px;
+  height: 96px;
+  line-height: 96px;
   padding: 0 18px;
   font-size: 15px;
   font-weight: 600;
