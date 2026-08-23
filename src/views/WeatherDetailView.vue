@@ -109,7 +109,14 @@ function getRecommendReason(rule) {
 function renderChart() {
   if (!chartCanvas.value || hourlyForecast.value.length === 0) return
 
-  const labels = hourlyForecast.value.map((item) => item.dt_txt.split(' ')[1].slice(0, 5))
+  const labels = hourlyForecast.value.map((item) =>
+    new Date(item.dt * 1000).toLocaleTimeString('ko-KR', {
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: false,
+      timeZone: 'Asia/Seoul',
+    }),
+  )
   const temps = hourlyForecast.value.map((item) => {
     const raw = Math.round(item.main.temp)
     if (configStore.unit === 'fahrenheit') {
