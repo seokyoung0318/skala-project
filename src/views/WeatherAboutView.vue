@@ -1,6 +1,7 @@
 //# 서비스 소개용 정적 페이지
 <script setup>
 import storePhoto from '@/assets/Orders.png'
+import weatherLogo from '@/assets/WeatherOrder_Logo.png'
 </script>
 
 <template>
@@ -44,6 +45,17 @@ import storePhoto from '@/assets/Orders.png'
         오롯이 자신의 경험과 감에만 의존해 발주를 결정해야 합니다. Weather Order는 이런 정보 격차를
         줄이기 위한 서비스입니다.
       </p>
+    </section>
+
+    <section class="about-section logo-section">
+      <h2>로고</h2>
+      <div class="logo-content">
+       <img :src="weatherLogo" alt="Weather Order 로고" class="logo-img" />
+        <p>
+      날씨(배경)와 매출 그래프(전경)를 겹친 2단 구조로 "날씨가 매출을 결정한다"는
+      서비스의 핵심 메시지를 로고 담았습니다.
+        </p>
+      </div>
     </section>
 
     <section class="about-section">
@@ -174,6 +186,26 @@ h1 {
     margin-top: 24px;
     padding: 20px;
     border-radius: var(--toss-radius-sm);
+  }
+}
+
+.logo-content {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.logo-img {
+  height: 60px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+@media (max-width: 640px) {
+  .logo-content {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
   }
 }
 </style>
