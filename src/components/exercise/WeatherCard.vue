@@ -24,7 +24,15 @@ const displayTemp = computed(() => {
 
 <template>
   <el-card class="weather-card-item" @click="emit('select-card', weather.name)">
-    [{{ weather.name + '(' + weather.status + ')' + '현재 기온' + displayTemp }}]
+    [{{
+      weather.name +
+      '(' +
+      weather.status +
+      ')' +
+      '현재 기온' +
+      displayTemp +
+      configStore.unitSymbol
+    }}]
     <span v-if="weather.temp >= 25"> 높은 기온(25도 이상) ☀️</span>
     <span v-else-if="weather.temp >= 15 && weather.temp < 25">활동하기 좋은 날씨(15도~24도)</span>
     <span v-else> 낮은 기온(15도 이하)</span>
