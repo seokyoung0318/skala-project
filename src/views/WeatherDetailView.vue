@@ -249,7 +249,7 @@ onMounted(async () => {
 
 <style scoped>
 .detail-page {
-  max-width: 680px;
+  max-width: 1080px;
   margin: 0 auto;
   display: flex;
   flex-direction: column;

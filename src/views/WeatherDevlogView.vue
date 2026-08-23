@@ -5,7 +5,7 @@ import weatherLogo from '@/assets/WeatherOrder_Logo.png'
 
 <template>
   <div class="devlog-page">
-    <section class="devlog-card intro-card">
+    <section class="intro-card">
       <img :src="weatherLogo" alt="Weather Order" class="devlog-logo" />
       <h2 class="devlog-title">개발 회고</h2>
       <p class="devlog-desc">
@@ -125,7 +125,7 @@ import weatherLogo from '@/assets/WeatherOrder_Logo.png'
 
 <style scoped>
 .devlog-page {
-  max-width: 680px;
+  max-width: 1080px;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
@@ -190,7 +190,7 @@ import weatherLogo from '@/assets/WeatherOrder_Logo.png'
 
 .trouble-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: 1fr;
   gap: 12px;
 }
 
@@ -255,9 +255,6 @@ import weatherLogo from '@/assets/WeatherOrder_Logo.png'
   }
   .devlog-title {
     font-size: 20px;
-  }
-  .trouble-grid {
-    grid-template-columns: 1fr;
   }
 }
 </style>

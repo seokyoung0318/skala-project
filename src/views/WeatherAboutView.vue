@@ -42,8 +42,8 @@ import weatherLogo from '@/assets/WeatherOrder_Logo.png'
       <h2>이런 분들을 위해 만들었습니다</h2>
       <p>
         프랜차이즈 가맹점은 본사로부터 발주 노하우와 데이터를 지원받지만, 개인 영세 소상공인은
-        오롯이 자신의 경험과 감에만 의존해 발주를 결정해야 합니다. Weather Order는 이런 정보 격차를
-        줄이기 위한 서비스입니다.
+        오롯이 자신의 경험과 감에만 의존해 발주를 결정해야 합니다. <br>Weather Order는 이런 정보
+격차를 줄여 매출 증진에 실질적인 도움을 드리고자 만든 서비스입니다.
       </p>
     </section>
 
@@ -73,7 +73,7 @@ import weatherLogo from '@/assets/WeatherOrder_Logo.png'
 
 <style scoped>
 .about-wrapper {
-  max-width: 720px;
+  max-width: 1080px;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
