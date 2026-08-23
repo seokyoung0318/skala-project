@@ -76,6 +76,20 @@ export const cityNameMap = {
   제주: 'Jeju,KR',
   서귀포: 'Seogwipo,KR',
 }
+//날씨 맵핑표
+export function translateWeatherStatus(status) {
+  const statusMap = {
+    Clear: '맑음',
+    Clouds: '구름',
+    Rain: '비',
+    Drizzle: '이슬비',
+    Thunderstorm: '뇌우',
+    Snow: '눈',
+    Mist: '안개',
+    Fog: '안개',
+  }
+  return statusMap[status] || status
+}
 export function getTomorrowForecast(data) {
   if (!data || !data.list || data.list.length === 0) {
     return null

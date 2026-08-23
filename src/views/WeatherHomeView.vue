@@ -184,8 +184,8 @@ async function searchCityFromApi(cityName) {
       </template>
       <template v-slot:list>
         <section class="weather-card" v-if="filteredWeatherList.length > 0">
-          <h3>지역별 추천 발주 상품</h3>
-          <ul>
+          <h3 class="section-title">지역별 추천 발주 상품</h3>
+          <ul class="weather-list">
             <WeatherCard
               v-for="weather in filteredWeatherList"
               :key="weather.id"
@@ -196,9 +196,58 @@ async function searchCityFromApi(cityName) {
             />
           </ul>
         </section>
-        <p v-else-if="hasSearched">{{ searchQuery }} 없습니다.</p>
+        <p class="empty-text" v-else-if="hasSearched">{{ searchQuery }} 없습니다.</p>
       </template>
     </BaseDashboardCard>
-    <p>{{ selectedCity }}</p>
+    <p class="status-banner">{{ selectedCity }}</p>
   </div>
 </template>
+
+<style scoped>
+.dashboard-wrapper {
+  max-width: 680px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.section-title {
+  margin: 0 0 16px;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--toss-text);
+  letter-spacing: -0.4px;
+}
+
+.weather-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* 마지막 카드 아래 여백 제거 (카드 자체 margin-bottom 상쇄) */
+.weather-list > :last-child {
+  margin-bottom: 0;
+}
+
+.empty-text {
+  margin: 0;
+  padding: 40px 0;
+  text-align: center;
+  font-size: 15px;
+  color: var(--toss-text-mute);
+}
+
+.status-banner {
+  margin: 0;
+  padding: 16px 20px;
+  border-radius: var(--toss-radius-sm);
+  background: var(--toss-blue-light);
+  color: var(--toss-blue-dark);
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: -0.2px;
+  text-align: center;
+}
+</style>

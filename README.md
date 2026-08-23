@@ -1,51 +1,128 @@
-<!-- 틀림 -->
+# Weather Order — 날씨 기반 발주 추천 서비스
 
-<SearchBar: search-query="searchQuery" ... />
+## 소개
 
-<!-- 맞음 -->
+매출관리의 핵심은 사전 발주를 통해 재고를 확보하고, 재고 회전일을 고려해 재고를 효율적으로 운영하는 데 있습니다. 이를 위해서는 판매량을 사전에 예측하고, 그에 맞춰 발주로 재고를 확보하는 과정이 무엇보다 중요합니다.
 
-<SearchBar :search-query="searchQuery" ... />
+판매량에 영향을 주는 변수는 다양하지만 대부분 통제하거나 예측하기 어렵습니다. 그중 기상 조건은 매출에 직접적인 영향을 주면서도, 예보를 통해 사전 대비가 가능한 몇 안 되는 변수입니다.
 
-"전체 목록"이나 "여러 개를 도는 반복문" → 무조건 부모
-"그중 하나(단수)"만 다루는 코드 → 자식
-"뭔가를 실제로 바꾸는 함수 본체" → 부모
-"바꿔달라고 요청만 하는 emit" → 자식
+Weather Order는 이 기상 변수를 발주 의사결정에 직접 반영해, 판매 시점의 날씨를 기준으로 상품별 발주량을 추천합니다.
 
-사실 지금 비즈니스적으로 든 생각인데 발주는 보통 오늘이 아닌 내일껄 기준으로 전날 다음날껄 하거든? 그리고 사실 오늘 날씨는 오늘 내가 직접 느끼기도 하는데 쓸모가 있으려면 내일의 날씨를 보여주는게 좋을듯
+## 만든 이유
 
-<RouterView /> — 이게 진짜 컴포넌트예요 (혼자서 완결됨)
-</RouterView> — 이건 "닫기 전용" 기호예요, 혼자서는 못 써요
+프랜차이즈 가맹점은 본사로부터 발주 노하우와 데이터를 지원받지만, 개인 영세 소상공인은 오롯이 자신의 경험과 감에만 의존해 발주를 결정해야 합니다. Weather Order는 이런 정보 격차를 줄이기 위한 서비스입니다.
 
-useRouter를 vue에서 가져오려고 하고 있어요 — 근데 이건 vue-router에서 가져와야 해요
+## 주요 기능
 
-십중팔구 3번째 줄이 이렇게 되어 있을 거예요
+1. 다음날 예보 기준 지역별 발주 상품 추천
+2. 온도·강수 조건에 따른 카테고리별(음료, 얼음, 우산 등) 일평균 판매량 바탕으로 익일 발주량 계산
+3. 지역별 날씨 실시간 검색
+4. 섭씨/화씨 단위 전환 (Pinia 기반 전역 상태 관리)
+5. 내일 하루 시간대별(3시간 간격) 기온·강수 예보 그래프
 
-javascript
-// 잘못됨 - useRouter는 'vue'에 없음
-import { ref, computed, watch, watchEffect, useRouter } from 'vue'
+## 기술 스택
 
-vue와 vue-router는 완전히 다른 두 개의 라이브러리예요
+| 구분     | 사용 기술                                       |
+| -------- | ----------------------------------------------- |
+| Frontend | Vue 3 (Composition API)                         |
+| 상태관리 | Pinia                                           |
+| API      | OpenWeatherMap API (5-day/3-hour forecast)      |
+| 기타     | Element Plus, Vue Router, Axios, Chart.js, Vite |
 
-라이브러리 제공하는 것
-vue ref, computed, watch, watchEffect, onMounted 등 — Vue 자체의 반응형/생명주기 기능
-vue-router useRouter, useRoute, RouterLink, RouterView — 라우팅 전용 기능
+## 개발 과정에서의 AI 활용
 
-App.vue → useRoute() (메뉴 활성 표시용, route.path)
-WeatherDetailView.vue → useRoute() (URL 파라미터 읽기용, route.params.cityId)
-WeatherHomeView.vue → 여기가 useRouter()가 필요한 유일한 곳 (상세보기 클릭 시 페이지 이동시키기 위해)
+이 프로젝트는 Claude(대화형 AI)와 Claude Code(AI 코딩 어시스턴트)를 개발 보조 도구로 활용했습니다. 다만 아래 원칙을 지켰습니다.
 
-진짜 원인: SearchBar.vue의 이 줄
-vue
-<button @click="emit('confirm-search', 'searchQuery')">확인</button>
+- **로직/기능 구현**: 직접 작성. AI에게는 개념 설명, 에러 원인 분석, 코드 리뷰를 요청하며 진행 (→ 트러블슈팅 섹션 참고)
+- **CSS/디자인 정리**: Claude Code에 명시적인 제약 조건을 주고 작업 위임
+  - `<script setup>` 내부 로직, 이벤트 바인딩(@click, emit 등), 데이터 바인딩(v-for, v-if), Pinia store, API 파일은 일체 수정 금지
+  - `<style scoped>` 및 순수 레이아웃 목적의 wrapper만 수정 허용
+  - Vite가 자동 생성한 `main.css`(프로젝트 로직과 무관한 기본 스캐폴딩 CSS)는 토스(Toss) 디자인 시스템 스타일로 전면 재작성 요청
+  - 작업 전 Git 커밋으로 백업, 단계마다 변경 계획을 먼저 확인받고 진행
+- 이 과정에서 "AI에게 무엇을 맡기고, 무엇을 맡기지 말아야 하는지"를 판단하는 것 자체가 중요한 학습 경험이었음
 
-여기 'searchQuery'가 작은따옴표로 감싸져 있어요. 이러면 이건 변수 searchQuery를 가리키는 게 아니라, 그냥 "searchQuery"라는 7글자짜리 문자열 그 자체로 취급돼요.
+## 폴더 구조
 
-1단계 — 검색창에 "Seoul"을 입력해도, input이 아니라 button을 클릭하는 순간엔 저장된 값이 searchQuery 변수가 아니라 문자열 "searchQuery"가 그대로 전달됨
+```
+src/
+├── api/
+│   └── weather.js          # OpenWeatherMap API 호출, 한글↔영문 도시명 매핑,
+│                            # 내일 날짜 필터링, 날씨 상태값 한글 번역
+├── assets/
+│   ├── main.css             # Vite 기본 스캐폴딩 CSS (Toss 스타일로 재작성)
+│   └── WeatherOrder_Logo.png
+├── components/
+│   └── exercise/
+│       ├── BaseDashboardCard.vue   # 대시보드 공통 레이아웃 (slot 기반)
+│       ├── SearchBar.vue           # 도시 검색창
+│       ├── UnitToggler.vue         # 섭씨/화씨 토글 버튼
+│       └── WeatherCard.vue         # 도시별 날씨 카드 (props: weather)
+├── router/
+│   └── index.js             # /, /about, /devlog, /weather/:cityId 라우트
+├── stores/
+│   ├── averageSalesStore.js # 대시보드-상세페이지 판매수량 공유 상태
+│   └── configStore.js       # Pinia — 섭씨/화씨 단위 (state/getters/actions)
+├── views/
+│   ├── WeatherHomeView.vue    # 메인 대시보드 (도시 목록, 검색, 발주 추천)
+│   ├── WeatherDetailView.vue  # 도시 상세 (:cityId 동적 라우트, 시간대별 그래프)
+│   ├── WeatherAboutView.vue   # 서비스 소개
+│   ├── WeatherDevlogView.vue  # 개발 회고
+│   └── NotFoundView.vue       # 404 페이지
+├── App.vue                   # 전역 네비게이션 (el-menu)
+└── main.js
+```
 
-2단계 — WeatherHomeView.vue의 searchCityFromApi("searchQuery")가 실행됨 (입력하신 "Seoul"이 아니라 진짜 "searchQuery"라는 글자가 넘어감)
+## 트러블슈팅
 
-3단계 — fetchWeatherByCity("searchQuery") → OpenWeatherMap에 q=searchQuery로 요청 → 당연히 그런 도시는 없으니 404
+### 1. .env 파일 위치 문제로 API 키 인식 실패
 
-즉 지금까지 "Seoul", "suwon" 뭘 입력해도 실제로는 다 무시되고, 매번 "searchQuery"라는 글자 그대로가 서버에 날아가고 있었던 거예요.
+- **문제**: `.env`에 API 키를 저장했는데 터미널에서 `cat .env`가 "파일 없음" 에러를 냄. API 호출 시 401(Unauthorized) 에러 발생
+- **원인**: 에디터에서 파일을 생성할 때 프로젝트 루트가 아닌 `src` 폴더 안에 `.env`가 만들어짐. Vite는 프로젝트 루트에 있는 `.env`만 읽기 때문에, `import.meta.env.VITE_OPENWEATHER_API_KEY`가 계속 undefined로 처리되어 API 키 없이 요청이 나가고 있었음
+- **해결**: `.env` 파일을 프로젝트 루트로 이동, 개발 서버 재시작 후 정상 작동 확인
 
-await nextTick()
+### 2. 컴포넌트 간 emit 이벤트 이름 불일치
+
+- **문제**: 카드를 클릭해도 선택 상태 표시 문구가 갱신되지 않음
+- **원인**: 자식 컴포넌트에서 `emit('selected-card', ...)`로 보내는 이벤트 이름과, 부모 컴포넌트에서 `@select-card="..."`로 받고 있는 이름이 한 글자 달라(selected vs select) 이벤트가 전달되지 않음
+- **해결**: emit하는 이름과 부모에서 받는 이름을 정확히 일치시켜 해결. Vue는 이벤트 이름을 문자열로 완전히 일치시켜야만 부모-자식 통신이 이루어진다는 것을 실감
+
+### 3. UTC와 로컬 시간대 차이로 인한 "내일 날짜" 계산 오류
+
+- **문제**: 내일 날짜의 예보 데이터를 찾는 로직이 가끔 원하는 데이터를 못 찾음
+- **원인**: `new Date()`는 로컬 시간대(한국, UTC+9) 기준이지만, 이를 `.toISOString()`으로 변환하면 UTC 기준 문자열이 됨. API가 주는 `dt_txt`도 UTC 기준이라 겉보기엔 문제없어 보이지만, 시간대 경계 부근에서 "내일" 판단이 어긋날 수 있음
+- **해결**: 완벽한 시간대 계산보다, 원하는 데이터를 못 찾았을 때 가장 가까운 예보로 대체하는 fallback 로직을 추가해 앱이 죽지 않도록 방어
+
+### 4. 한글 도시명으로 API 검색이 안 되는 문제
+
+- **문제**: 검색창에 "서울", "춘천" 같은 한글 지명을 입력하면 API가 계속 404(Not Found)를 반환하며 검색 실패
+- **원인**: OpenWeatherMap API는 영문 도시명(예: "Seoul")으로만 정확히 검색됨. 한글 지명을 영문으로 자동 변환해주는 표준화된 방법이 없어서, API 자체가 한글 입력을 이해하지 못함
+- **해결**: 한글 지명과 API용 영문 지명을 짝지은 매핑 객체(`cityNameMap`)를 직접 작성해, 검색 시 이 매핑표를 거쳐 변환 후 API에 요청하도록 처리. 전국 주요 지역 약 40여 곳을 등록. 매핑표에 없는 지명은 여전히 검색이 안 된다는 한계가 있으며, 완전한 해결을 위해서는 카카오 로컬 API 같은 별도의 지오코딩 서비스 연동이 필요하다는 점도 확인 (이번 프로젝트 범위에서는 제외)
+
+### 5. Chart.js 그래프가 에러 없이 안 뜨는 문제
+
+- **문제**: 그래프를 그리는 코드를 작성했는데 에러 없이 그래프만 계속 안 뜸
+- **원인**: API 데이터를 받아 `city.value`에 저장한 직후 바로 `renderChart()`를 호출했는데, Vue는 반응형 데이터가 바뀌어도 화면(DOM)을 즉시 그리지 않고 다음 틱에 일괄 반영함. 그 결과 그래프를 그릴 `<canvas>`가 아직 실제 DOM에 존재하지 않아 함수가 조용히 실패
+- **해결**: `await nextTick()`으로 DOM 업데이트 완료를 기다린 뒤 `renderChart()`를 호출하도록 순서 조정. Vue의 반응형 업데이트가 비동기적이라는 걸 이해하게 됨
+
+### 6. 검색이 항상 실패하는 원인이 따옴표 하나였던 문제
+
+- **문제**: 검색창에 "Seoul", "Suwon" 등 어떤 도시명을 입력해도 항상 "해당 도시를 찾을 수 없습니다"만 뜸
+- **원인**: `SearchBar.vue`의 확인 버튼에서 `emit('confirm-search', 'searchQuery')`로 작성했는데, `'searchQuery'`가 작은따옴표로 감싸져 있어 변수를 참조하는 게 아니라 "searchQuery"라는 7글자 문자열 그 자체로 취급됨. 그 결과 사용자가 입력한 값과 무관하게 항상 "searchQuery"라는 글자가 API에 전달되고 있었음
+- **해결**: 따옴표를 제거해 변수(`searchQuery`)를 참조하도록 수정. 문자열 리터럴(`'searchQuery'`)과 변수 참조(`searchQuery`)의 차이를 실감하는 계기가 됨
+
+### 7. useRouter를 잘못된 라이브러리에서 import
+
+- **문제**: `import { ref, computed, watch, watchEffect, useRouter } from 'vue'`처럼 작성했더니 에러 발생
+- **원인**: `vue`와 `vue-router`는 완전히 다른 두 라이브러리. `ref`, `computed`, `watch` 등은 Vue 자체의 반응형 기능이지만, `useRouter`, `useRoute`, `RouterLink` 같은 라우팅 관련 기능은 `vue-router`에서 제공됨
+- **해결**: `useRouter`를 `vue-router`에서 별도로 import하도록 수정. 같은 프레임워크 생태계 안에서도 기능별로 패키지가 분리되어 있다는 걸 이해함
+
+## 배운 점 / 회고
+
+**발주 기준 시점에 대한 재판단**
+처음엔 "오늘의 날씨"를 보여주면 될 거라 생각했지만, 개발 도중 실제 발주 업무 경험을 떠올려보니 발주는 보통 전날 다음날 판매분을 미리 준비하는 구조라는 걸 다시 인식했다. 오늘 날씨는 사용자가 직접 체감할 수 있어 서비스로서의 정보 가치가 낮지만, 내일 날씨는 예측이 어려운 만큼 서비스가 제공할 실질적인 가치가 있다고 판단해, API 데이터를 "지금 시각과 가장 가까운 예보"에서 "내일 날짜 기준 예보"로 로직 전체를 바꿨다.
+
+**부모-자식 컴포넌트 설계 원칙**
+컴포넌트를 부모/자식으로 나눌 때, "전체 목록이나 반복문을 도는 로직"은 부모가, "그중 하나(단수)만 다루는 표현"은 자식이 담당한다는 원칙을 여러 번의 시행착오 끝에 체득함. 마찬가지로 "실제로 상태를 바꾸는 함수 본체"는 부모에 두고, 자식은 emit으로 "바꿔달라고 요청"만 한다는 역할 분리도 명확해짐
+
+**Chart.js는 아직 완전히 체화하지 못함**
+이번 프로젝트에서 처음 사용해봤다. AI에게 물어보며 일단 동작하는 그래프까지는 완성했지만, `Chart.register()`로 필요한 모듈만 골라 등록하는 방식이나 옵션 구조(scales, plugins 등)를 아직 완전히 체화하지는 못했다. 다음에는 공식 문서를 따로 읽어보며 원리를 더 다져야 할 것 같다.

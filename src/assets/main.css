@@ -1,35 +1,62 @@
 @import './base.css';
 
+/* ===== Toss 스타일 디자인 토큰 ===== */
+:root {
+  --toss-blue: #3182f6;
+  --toss-blue-dark: #1b64da;
+  --toss-blue-light: #e8f3ff;
+
+  --toss-bg: #f2f4f6;
+  --toss-surface: #ffffff;
+  --toss-border: #e5e8eb;
+
+  --toss-text: #191f28;
+  --toss-text-sub: #4e5968;
+  --toss-text-mute: #8b95a1;
+
+  --toss-red: #f04452;
+  --toss-orange: #ff8a00;
+  --toss-orange-light: #fff4e6;
+  --toss-green: #15c47e;
+  --toss-green-light: #e8faf2;
+
+  --toss-radius: 16px;
+  --toss-radius-sm: 12px;
+
+  /* base.css 의 다크모드 대응을 라이트 팔레트로 고정 */
+  --color-background: var(--toss-bg);
+  --color-background-soft: var(--toss-surface);
+  --color-background-mute: var(--toss-bg);
+  --color-border: var(--toss-border);
+  --color-heading: var(--toss-text);
+  --color-text: var(--toss-text-sub);
+}
+
+body {
+  background: var(--toss-bg);
+  color: var(--toss-text-sub);
+  font-size: 15px;
+  line-height: 1.6;
+  letter-spacing: -0.2px;
+}
+
 #app {
   max-width: 1280px;
   margin: 0 auto;
-  padding: 2rem;
+  padding: 0;
   font-weight: normal;
 }
 
-a,
-.green {
+a {
   text-decoration: none;
-  color: hsla(160, 100%, 37%, 1);
-  transition: 0.4s;
-  padding: 3px;
+  color: var(--toss-blue);
+  transition: color 0.2s;
+  padding: 0;
 }
 
 @media (hover: hover) {
   a:hover {
-    background-color: hsla(160, 100%, 37%, 0.2);
-  }
-}
-
-@media (min-width: 1024px) {
-  body {
-    display: flex;
-    place-items: center;
-  }
-
-  #app {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    padding: 0 2rem;
+    color: var(--toss-blue-dark);
+    background-color: transparent;
   }
 }

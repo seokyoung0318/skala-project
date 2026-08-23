@@ -33,6 +33,11 @@ const router = createRouter({
       // which is lazy-loaded when the route is visited.
       component: () => import('../views/NotFoundView.vue'),
     },
+    {
+      path: '/devlog',
+      name: 'devlog',
+      component: () => import('../views/WeatherDevlogView.vue'),
+    },
   ],
 })
 
