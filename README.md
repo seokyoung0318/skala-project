@@ -29,6 +29,20 @@ Weather Order는 이 기상 변수를 발주 의사결정에 직접 반영해, �
 | API      | OpenWeatherMap API (5-day/3-hour forecast)      |
 | 기타     | Element Plus, Vue Router, Axios, Chart.js, Vite |
 
+## 단원별 실습 내역
+
+| 단원 | Customization 내용 |
+|---|---|
+| 2. Getting Started with Vue.js | Vite로 프로젝트 초기 세팅, 폴더 구조 설계 |
+| 3. Vue Syntax | v-for/v-if/v-model로 날씨 카드 목록 렌더링 및 검색 필터 구현 |
+| 4. Composition API | ref/computed/watch로 발주 추천 로직 및 상태 관리 구현 |
+| 5. Vue Components | WeatherCard, SearchBar, UnitToggler 등 props/emit 기반 컴포넌트 분리 |
+| 6. Vue Router | `/`, `/about`, `/devlog`, `/weather/:cityId` 동적 라우트 구성 |
+| 7. Pinia | configStore(섭씨/화씨), 도시별 판매수량 공유 상태 구현 |
+| 8. Axios | OpenWeatherMap API 연동, 내일 날짜 기준 예보 필터링 |
+| 9. UI Libraries | Element Plus(el-menu, el-card, el-button) 적용 및 Toss 스타일 커스텀 |
+| 10. Vite Build & Deployment | 환경변수 분리, Vercel 배포, staging/production 모드 실습 |
+
 ## 개발 과정에서의 AI 활용
 
 이 프로젝트는 Claude(대화형 AI)와 Claude Code(AI 코딩 어시스턴트)를 개발 보조 도구로 활용했습니다. 다만 아래 원칙을 지켰습니다.
@@ -39,7 +53,7 @@ Weather Order는 이 기상 변수를 발주 의사결정에 직접 반영해, �
   - `<style scoped>` 및 순수 레이아웃 목적의 wrapper만 수정 허용
   - Vite가 자동 생성한 `main.css`(프로젝트 로직과 무관한 기본 스캐폴딩 CSS)는 토스(Toss) 디자인 시스템 스타일로 전면 재작성 요청
   - 작업 전 Git 커밋으로 백업, 단계마다 변경 계획을 먼저 확인받고 진행
-- 이 과정에서 "AI에게 무엇을 맡기고, 무엇을 맡기지 말아야 하는지"를 판단하는 것 자체가 중요한 학습 경험이었음
+- 이 과정에서 "AI에게 무엇을 맡기고, 무엇을 맡기지 말아야 하는지"를 판단하는 것 자체가 중요한 학습 경험이었습니다.
 
 ## 폴더 구조
 
